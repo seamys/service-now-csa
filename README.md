@@ -163,19 +163,49 @@ service-now-csa/
 
 本项目已配置自动部署到 GitHub Pages：
 
+### 手动启用 GitHub Pages（重要！）
+
+如果您是项目所有者或 fork 了这个项目，请按以下步骤启用 GitHub Pages：
+
+#### 步骤 1：启用 GitHub Pages
+1. 进入您的 GitHub 仓库页面：`https://github.com/seamys/service-now-csa`
+2. 点击 **Settings** 选项卡（需要仓库管理员权限）
+3. 在左侧菜单中滚动找到 **Pages** 选项
+4. 在 **Source** 下拉菜单中选择 **GitHub Actions**
+5. 点击 **Save** 保存设置
+
+#### 步骤 2：触发部署
+```bash
+# 提交一个小的更改来触发部署
+git add .
+git commit -m "Enable GitHub Pages"
+git push origin master
+```
+
+#### 步骤 3：等待部署完成
+- 前往仓库的 **Actions** 选项卡
+- 查看 "Deploy static content to Pages" 工作流
+- 等待绿色勾号表示部署成功
+
+#### 步骤 4：访问网站
+部署成功后，您的网站将在以下地址可用：
+- **主页**: `https://seamys.github.io/service-now-csa/`
+- **练习模式**: `https://seamys.github.io/service-now-csa/csa_standalone_quiz.html`
+- **考试模式**: `https://seamys.github.io/service-now-csa/csa_exam_mode.html`
+
+### 故障排除
+
+如果遇到部署问题：
+
+1. **检查权限**：确保您有仓库的管理员权限
+2. **检查分支**：确保推送到 `master` 或 `main` 分支
+3. **等待时间**：首次部署可能需要几分钟时间
+4. **查看日志**：在 Actions 选项卡中查看详细的部署日志
+
 ### 自动部署
-- 每次推送到 `main` 或 `master` 分支时自动触发部署
+- 每次推送到 `master` 分支时自动触发部署
 - 使用 GitHub Actions 工作流自动构建和发布
-- 部署完成后可通过 `https://yourusername.github.io/service-now-csa/` 访问
-
-### 手动启用 GitHub Pages
-如果您 fork 了这个项目，需要在您的仓库中启用 GitHub Pages：
-
-1. 进入您的 GitHub 仓库页面
-2. 点击 **Settings** 选项卡
-3. 滚动到 **Pages** 部分
-4. 在 **Source** 下选择 **GitHub Actions**
-5. 项目将自动部署到 `https://yourusername.github.io/service-now-csa/`
+- 支持手动触发部署（在 Actions 页面点击 "Run workflow"）
 
 ### 本地预览
 ```bash
