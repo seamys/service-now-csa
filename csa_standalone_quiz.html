@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSA 认证自测系统 - 独立版</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CSA 认证自测系统</h1>
+            <p>ServiceNow Certified System Administrator - 离线练习版</p>
+        </div>
+
+        <!-- 主控制面板 -->
+        <div class="controls" id="controlsPanel">
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="questionCount">题目数量</label>
+                    <select id="questionCount">
+                        <option value="5">5 题</option>
+                        <option value="10" selected>10 题</option>
+                        <option value="20">20 题</option>
+                        <option value="30">30 题</option>
+                        <option value="50">50 题</option>
+                        <option value="100">100 题</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="questionType">题目类型</label>
+                    <select id="questionType">
+                        <option value="all">全部题目</option>
+                        <option value="single">仅单选题</option>
+                        <option value="multiple">仅多选题</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="searchKeyword">关键词筛选</label>
+                    <input type="text" id="searchKeyword" placeholder="输入关键词...">
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="startQuiz()">开始测试</button>
+                <button class="btn-secondary" onclick="randomPractice()">随机练习</button>
+                <button class="btn-danger" onclick="startWrongQuestionMode()">错题模式</button>
+                <button class="btn-info" onclick="startNewQuestionMode()">新题模式</button>
+                <button class="btn-success" onclick="showStats()">题库统计</button>
+                <button class="btn-warning" onclick="resetQuestionStatus()">重置状态</button>
+            </div>
+            <div class="button-group" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e9ecef;">
+                <button class="btn-exam" onclick="window.location.href='csa_exam_mode.html'" style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; font-size: 18px; padding: 15px 30px; border-radius: 25px; box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3); transition: all 0.3s ease;">
+                    🎯 进入考试模式
+                </button>
+                <div style="font-size: 14px; color: #6c757d; text-align: center; margin-top: 10px;">
+                    模拟真实CSA考试环境 • 90分钟 • 60道题 • 严格计时
+                </div>
+            </div>
+        </div>
+
+        <!-- 题目状态展示区域 -->
+        <div class="question-status" id="questionStatus">
+            <h3>题目状态总览</h3>
+
+            <!-- 状态统计 -->
+            <div class="status-summary">
+                <div class="status-item">
+                    <span class="status-indicator correct"></span>
+                    <span>正确 (<span id="correctCount">0</span>)</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-indicator wrong"></span>
+                    <span>错误 (<span id="wrongCount">0</span>)</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-indicator untested"></span>
+                    <span>未测试 (<span id="untestedCount">385</span>)</span>
+                </div>
+            </div>
+
+            <!-- 统一的题目网格 -->
+            <div class="unified-question-grid" id="unifiedQuestionGrid">
+                <!-- 题目将在这里显示 -->
+            </div>
+        </div>
+
+
+        <!-- 测试界面 -->
+        <div class="quiz-container" id="quizContainer">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">题目 1 / 10</div>
+                <div class="question-controls">
+                    <button class="language-toggle" id="languageToggle" onclick="toggleLanguage()" title="切换中英文">
+                        <span class="lang-icon">🌐</span>
+                        <span class="lang-text" id="langText">中文</span>
+                    </button>
+                    <div class="question-stats" id="questionStats">单选题</div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="question-text" id="questionText">
+                题目内容将在这里显示...
+            </div>
+
+            <div class="options" id="optionsContainer">
+                <!-- 选项将通过JavaScript动态生成 -->
+            </div>
+
+            <div class="quiz-navigation">
+                <button class="btn-secondary" id="prevBtn" onclick="previousQuestion()">上一题</button>
+                <div class="button-group">
+                    <button class="btn-danger" onclick="exitQuiz()">退出测试</button>
+                    <button class="btn-primary" id="nextBtn" onclick="nextQuestion()">下一题</button>
+                    <button class="btn-success hidden" id="finishBtn" onclick="finishQuiz()">完成测试</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果界面 -->
+        <div class="results" id="resultsContainer">
+            <h2>测试完成！</h2>
+            <div class="score-display" id="scoreDisplay">85%</div>
+            <div class="score-details" id="scoreDetails">
+                <!-- 详细结果将通过JavaScript动态生成 -->
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="restartQuiz()">重新开始</button>
+                <button class="btn-secondary" onclick="reviewAnswers()">查看解析</button>
+                <button class="btn-success" onclick="showStats()">题库统计</button>
+            </div>
+        </div>
+
+        <!-- 统计界面 -->
+        <div class="stats-container" id="statsContainer">
+            <h2>题库统计信息</h2>
+            <div class="stats-grid" id="statsGrid">
+                <!-- 统计信息将通过JavaScript动态生成 -->
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="backToMain()">返回主界面</button>
+            </div>
+        </div>
+
+        <!-- 答案解析界面 -->
+        <div class="answer-review" id="reviewContainer">
+            <h2>答案解析</h2>
+            <div id="reviewContent">
+                <!-- 解析内容将通过JavaScript动态生成 -->
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="backToResults()">返回结果</button>
+                <button class="btn-secondary" onclick="restartQuiz()">重新测试</button>
+            </div>
+        </div>
+    </div>
+    <!-- 引入数据文件 -->
+    <script src="data/questions.js"></script>
+    <!-- 引入翻译数据 -->
+    <script src="data/questions_translated.js"></script>
+    <!-- 引入主要功能脚本 -->
+    <script src="js/quiz.js"></script>
+</body>
+
+</html>

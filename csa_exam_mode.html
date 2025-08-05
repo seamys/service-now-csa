@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceNow CSA Certification Exam - Exam Mode</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/exam-mode.css">
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-container">
+            <div class="servicenow-logo">
+                <div class="logo-circle"></div>
+                <div class="logo-text">ServiceNow</div>
+            </div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Initializing CSA Certification Exam...</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Exam Preparation Interface -->
+        <div class="exam-preparation" id="examPreparation">
+            <div class="header">
+                <h1>ServiceNow CSA Certification Exam</h1>
+                <p>ServiceNow Certified System Administrator - Official Exam Simulation</p>
+            </div>
+
+        <div class="exam-info">
+            <div class="exam-details">
+                <h2>Exam Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Time Limit:</strong>
+                        <span>90 minutes</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Number of Questions:</strong>
+                        <span>60 questions</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Passing Score:</strong>
+                        <span>70% (42 correct answers)</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Question Types:</strong>
+                        <span>Multiple Choice & Multiple Select</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exam-rules">
+                <h3>Exam Rules</h3>
+                <ul>
+                    <li>Once started, the exam cannot be paused and must be completed within 90 minutes</li>
+                    <li>All questions must be answered; unanswered questions will be marked as incorrect</li>
+                    <li>Answers cannot be changed after submission</li>
+                    <li>Do not switch tabs or open other applications during the exam</li>
+                    <li>A detailed score report will be provided after completion</li>
+                </ul>
+            </div>                            <div class="exam-settings">
+                <h3>Exam Configuration</h3>
+                <div class="settings-grid">
+                    <div class="setting-group">
+                        <label for="examDifficulty">Difficulty Level</label>
+                        <select id="examDifficulty">
+                            <option value="normal">Standard</option>
+                            <option value="hard">Advanced</option>
+                            <option value="mixed">Mixed Difficulty</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="questionSelection">Question Selection</label>
+                        <select id="questionSelection">
+                            <option value="random">Random Selection</option>
+                            <option value="weighted">Weighted (Focus on Weak Areas)</option>
+                            <option value="untested">Prioritize Untested Questions</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="examMode">Exam Mode</label>
+                        <select id="examMode">
+                            <option value="standard">Standard Mode</option>
+                            <option value="practice">Practice Mode (with hints)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="confirmation">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="confirmReady">
+                    <span class="checkmark"></span>
+                    I have read and understand the exam rules and am ready to begin the exam
+                </label>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" id="startExamBtn" onclick="startExam()" disabled>Start Exam</button>
+                <button class="btn-secondary" onclick="backToQuiz()">Back to Practice</button>
+            </div>
+        </div>
+        </div>
+
+        <!-- Exam Interface -->
+        <div class="exam-container" id="examContainer" style="display: none;">
+            <!-- Exam Header Information -->
+            <div class="exam-header">
+                <div class="exam-title">ServiceNow CSA Certification Exam</div>
+                <div class="exam-timer">
+                    <span class="timer-label">Time Remaining:</span>
+                    <span class="timer-display" id="timeRemaining">90:00</span>
+                </div>
+                <div class="exam-progress">
+                    <span>Question <span id="currentQuestionNum">1</span> of 60</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="exam-progress-bar">
+                <div class="progress-fill" id="examProgressFill"></div>
+                <div class="progress-markers" id="progressMarkers">
+                    <!-- Progress markers will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Question Navigation -->
+            <div class="question-navigator" id="questionNavigator">
+                <div class="navigator-header">
+                    <span>Question Navigator</span>
+                    <button class="nav-toggle" onclick="toggleNavigator()">
+                        <span class="toggle-icon">⌄</span>
+                    </button>
+                </div>
+                <div class="navigator-grid" id="navigatorGrid">
+                    <!-- Question navigation will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Question Content -->
+            <div class="exam-question">
+                <div class="question-header">
+                    <div class="question-type" id="examQuestionType">Multiple Choice</div>
+                    <div class="question-status" id="examQuestionStatus">Not Answered</div>
+                </div>
+
+                <div class="question-text" id="examQuestionText">
+                    Question content will be displayed here...
+                </div>
+
+                <div class="options-container" id="examOptionsContainer">
+                    <!-- Options will be dynamically generated by JavaScript -->
+                </div>
+
+                <div class="question-notes">
+                    <textarea id="questionNotes" placeholder="Optional notes for this question..."></textarea>
+                </div>
+            </div>
+
+            <!-- Exam Navigation -->
+            <div class="exam-navigation">
+                <div class="nav-left">
+                    <button class="btn-secondary btn-with-icon btn-prev" id="examPrevBtn" onclick="examPreviousQuestion()">
+                        <span class="btn-icon">←</span>
+                        <span class="btn-text">Previous</span>
+                    </button>
+                </div>
+                <div class="nav-center">
+                    <button class="btn-warning" onclick="flagQuestion()">
+                        <span id="flagIcon">🚩</span> Flag Question
+                    </button>
+                    <button class="btn-info" onclick="showExamOverview()">Exam Overview</button>
+                </div>
+                <div class="nav-right">
+                    <button class="btn-secondary btn-with-icon btn-next" id="examNextBtn" onclick="examNextQuestion()">
+                        <span class="btn-text">Next</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                    <button class="btn-danger" onclick="submitExam()">Submit Exam</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Overview Interface -->
+        <div class="exam-overview" id="examOverview" style="display: none;">
+            <div class="overview-header">
+                <h2>Exam Overview</h2>
+                <div class="overview-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Answered:</span>
+                        <span class="stat-value" id="answeredCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Unanswered:</span>
+                        <span class="stat-value" id="unansweredCount">60</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Flagged:</span>
+                        <span class="stat-value" id="flaggedCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overview-grid" id="overviewGrid">
+                <!-- Question overview grid will be generated by JavaScript -->
+            </div>
+
+            <div class="overview-actions">
+                <button class="btn-secondary" onclick="closeExamOverview()">Continue Exam</button>
+                <button class="btn-danger" onclick="confirmSubmitExam()">Submit Exam</button>
+            </div>
+        </div>
+
+        <!-- Exam Results Interface -->
+        <div class="exam-results" id="examResults" style="display: none;">
+            <div class="results-header">
+                <h2>Exam Results</h2>
+                <div class="exam-score" id="examScore">85%</div>
+                <div class="pass-status" id="passStatus">PASSED</div>
+            </div>
+
+            <div class="results-details">
+                <div class="score-breakdown">
+                    <h3>Score Analysis</h3>
+                    <div class="breakdown-grid">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Total Questions:</span>
+                            <span class="breakdown-value">60</span>
+                        </div>
+                        <div class="breakdown-item correct">
+                            <span class="breakdown-label">Correct:</span>
+                            <span class="breakdown-value" id="correctAnswers">51</span>
+                        </div>
+                        <div class="breakdown-item wrong">
+                            <span class="breakdown-label">Incorrect:</span>
+                            <span class="breakdown-value" id="wrongAnswers">9</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Time Taken:</span>
+                            <span class="breakdown-value" id="examDuration">75 minutes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-analysis">
+                    <h3>Performance Analysis</h3>
+                    <div class="analysis-chart" id="analysisChart">
+                        <!-- Performance Analysis Chart -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button class="btn-primary" onclick="restartExam()">Retake Exam</button>
+                <button class="btn-secondary" onclick="reviewExamAnswers()">Review Answers</button>
+                <button class="btn-info" onclick="saveExamReport()">Save Report</button>
+                <button class="btn-warning" onclick="backToQuiz()">Back to Practice</button>
+            </div>
+        </div>
+
+        <!-- Answer Analysis Interface -->
+        <div class="exam-review" id="examReview" style="display: none;">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <div class="review-filters">
+                    <button class="filter-btn active" data-filter="all">All Questions</button>
+                    <button class="filter-btn" data-filter="wrong">Incorrect Only</button>
+                    <button class="filter-btn" data-filter="flagged">Flagged Questions</button>
+                </div>
+            </div>
+
+            <div class="review-content" id="reviewContent">
+                <!-- Analysis content will be dynamically generated by JavaScript -->
+            </div>
+
+            <div class="review-actions">
+                <button class="btn-primary" onclick="backToExamResults()">Back to Results</button>
+                <button class="btn-secondary" onclick="exportWrongQuestions()">Export Incorrect Questions</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div class="modal-overlay" id="modalOverlay" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <h3 id="modalTitle">Confirm Submission</h3>
+                <p id="modalMessage">Are you sure you want to submit the exam? You cannot change your answers after submission.</p>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn-danger" id="modalConfirmBtn" onclick="confirmAction()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Data Files -->
+    <script src="data/questions.js"></script>
+    <script src="data/questions_translated.js"></script>
+    <!-- 引入考试模式脚本 -->
+    <script src="js/exam-mode.js"></script>
+</body>
+
+</html>
