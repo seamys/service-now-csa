@@ -1,0 +1,35 @@
+# Jekyll configuration for GitHub Pages
+title: ServiceNow CSA 认证考试练习系统
+description: 专为 ServiceNow 认证系统管理员 (CSA) 考试设计的在线练习平台，包含 385 道精选题目和完整的考试模拟环境。
+url: "https://seamys.github.io"
+baseurl: "/service-now-csa"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
+  - .github/
+
+# Include files
+include:
+  - .htaccess
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO settings
+lang: zh-CN
+author: seamys
+
+# Social media
+github_username: seamys
+
+# Google Analytics (optional)
+# google_analytics: UA-XXXXXXXX-X
